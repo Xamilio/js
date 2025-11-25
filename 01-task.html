@@ -12,23 +12,22 @@
     <script>
         /*
         Задание:
-        Рефакторинг кода: объекты создавать не через литералы, а через функцию-конструктор.
+        Переписать функцию-конструктор Car на класс.
         */
 
-        function User(firstName, lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
+        class Car {
+            constructor(model, year) {
+                this.model = model;
+                this.year = year;
+            }
 
-            this.show = function () {
-                console.log(this.firstName + " " + this.lastName);
+            showInfo() {
+                console.log(this.model + " " + this.year);
             }
         }
 
-        let user1 = new User("Ivan", "Ivanov");
-        let user2 = new User("Olga", "Petrova");
-
-        user1.show();
-        user2.show();
+        let car1 = new Car("Audi", 2018);
+        car1.showInfo();
     </script>
 </body>
 
