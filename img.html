@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Галерея</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;    
+            justify-content: center;
+            height: 100vh;          
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #960101;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 2px;
+            margin: 0 10px;
+            font-size: 20px;
+        }
+
+        a:hover {
+            background-color: #8f3c3c;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="images/5.gif" name="picture" alt="Gallery Image" width="300" />
+
+    <div class="controls">
+        <a href="#" id="prevBtn">&lt;- Prev</a>
+        <a href="#" id="nextBtn">Next -&gt;</a>
+    </div>
+
+    <script type="text/javascript">
+        let locations = [
+            "images/1.gif", 
+            "images/2.gif",
+            "images/3.gif", 
+            "images/4.gif",
+            "images/5.gif"
+        ];
+        
+        let currentImage = 0;
+
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        
+        function nextImage(e) {
+            e.preventDefault();
+            
+            currentImage++;
+            if (currentImage >= locations.length) {
+                currentImage = 0;
+            }
+            
+            document.images["picture"].src = locations[currentImage];
+        }
+
+        function prevImage(e) {
+            e.preventDefault();
+            
+            currentImage--;
+            if (currentImage < 0) {
+                currentImage = locations.length - 1;
+            }
+            
+            document.images["picture"].src = locations[currentImage];
+        }
+
+        nextBtn.addEventListener("click", nextImage);
+        prevBtn.addEventListener("click", prevImage);
+
+    </script>
+</body>
+</html>
