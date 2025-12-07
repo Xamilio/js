@@ -181,23 +181,16 @@
             formService.saveForm();
         });
 
-        // Кнопка Очистить
         clearButton.addEventListener("click", function() {
             formElement.reset();
         });
 
-        // Кнопка Удалить
         deleteButton.addEventListener("click", function() {
             let selectedLi = userList.querySelector(".selected");
             
             if (selectedLi) {
-                // Удаляем визуально из списка
                 selectedLi.remove();
-                
-                // Очищаем форму
                 formElement.reset();
-                
-                // Сбрасываем текущий выбор
                 listService.selectedData = null; 
             } else {
                 alert("Выберите пользователя для удаления!");
