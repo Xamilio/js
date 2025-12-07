@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Test JS</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        #quizBlock {
+            display: none;
+            border: 1px solid black;
+            padding: 20px;
+            width: 500px;
+        }
+        #loginBlock {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid black;
+        }
+        .timer {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginBlock">
+    <h3>Введите имя:</h3>
+    <input type="text" id="username">
+    <button onclick="startTest()">Начать</button>
+</div>
+
+<div id="quizBlock">
+    <h3 id="qNumber"></h3>
+    <p id="qText"></p>
+    
+    <label>
+        <input type="radio" name="answ" id="opt1" value="0"> <span id="l1"></span>
+    </label>
+    <label>
+        <input type="radio" name="answ" id="opt2" value="1"> <span id="l2"></span>
+    </label>
+    <label>
+        <input type="radio" name="answ" id="opt3" value="2"> <span id="l3"></span>
+    </label>
+    <label>
+        <input type="radio" name="answ" id="opt4" value="3"> <span id="l4"></span>
+    </label>
+
+    <div class="timer">Осталось: <span id="time">15</span> сек</div>
+    <br>
+    <button onclick="checkAnswer()">Ответить</button>
+</div>
+
+<script>
+    let questions = [
+        {
+            q: "Для чего используют JS?",
+            a: ["Программы на ПК", "События на странице", "Динамика сайта", "Все верно"],
+            right: 3
+        },
+        {
+            q: "Какой тег для скрипта?",
+            a: ["<js>", "<script>", "<java>", "<code >"],
+            right: 1
+        },
+        {
+            q: "Как вывести окно?",
+            a: ["alert('Hi')", "msg('Hi')", "box('Hi')", "console('Hi')"],
+            right: 0
+        },
+        {
+            q: "Переменная в ES6?",
+            a: ["var", "dim", "let", "int"],
+            right: 2
+        },
+        {
+            q: "Строгое сравнение?",
+            a: ["==", "=", "!=", "==="],
+            right: 3
+        },
+        {
+            q: "Что такое DOM?",
+            a: ["Document Object Model", "Digital Object Mode", "Disk Order M", "Data Of Mine"],
+            right: 0
+        },
+        {
+            q: "Цикл for?",
+            a: ["for i=1 to 5", "for (i=0; i<5; i++)", "loop 5", "for (i<5)"],
+            right: 1
+        },
+        {
+            q: "Комментарий в JS?",
+            a: ["", "* text", "// text", "' text"],
+            right: 2
+        },
+        {
+            q: "Событие клика?",
+            a: ["onmouse", "onclick", "press", "hit"],
+            right: 1
+        },
+        {
+            q: "Массив это:",
+            a: ["{}", "()", "[]", "<>"],
+            right: 2
+        },
+        {
+            q: "typeof 42 вернет:",
+            a: ["int", "float", "number", "digit"],
+            right: 2
+        },
+        {
+            q: "JSON строку в объект:",
+            a: ["JSON.parse()", "JSON.toObj()", "JSON.stringify()", "JSON.run()"],
+            right: 0
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let userName = "";
+    let time = 15;
+    let timerInterval;
+
+    function startTest() {
+        let input = document.getElementById("username");
+        if (input.value == "") {
+            alert("Введите имя!");
+            return;
+        }
+        userName = input.value;
+        document.getElementById("loginBlock").style.display = "none";
+        document.getElementById("quizBlock").style.display = "block";
+        showQuestion();
+    }
+
+    function showQuestion() {
+        clearInterval(timerInterval);
+        time = 15;
+        document.getElementById("time").innerText = time;
+        
+        timerInterval = setInterval(function() {
+            time = time - 1;
+            document.getElementById("time").innerText = time;
+            if (time <= 0) {
+                checkAnswer(true);
+            }
+        }, 1000);
+
+        let qObj = questions[currentQ];
+        
+        document.getElementById("qNumber").innerText = "Вопрос " + (currentQ + 1) + " из 12";
+        document.getElementById("qText").innerText = qObj.q;
+        
+        document.getElementById("l1").innerText = qObj.a[0];
+        document.getElementById("l2").innerText = qObj.a[1];
+        document.getElementById("l3").innerText = qObj.a[2];
+        document.getElementById("l4").innerText = qObj.a[3];
+
+        let radios = document.getElementsByName("answ");
+        for(let i=0; i<radios.length; i++) {
+            radios[i].checked = false;
+        }
+    }
+
+    function checkAnswer(isTimeout) {
+        let radios = document.getElementsByName("answ");
+        let val = -1;
+
+        for(let i=0; i<radios.length; i++) {
+            if (radios[i].checked) {
+                val = radios[i].value;
+            }
+        }
+
+        if (val == -1 && !isTimeout) {
+            alert("Выберите ответ!");
+            return;
+        }
+
+        if (val == questions[currentQ].right) {
+            score = score + 1;
+        }
+
+        currentQ = currentQ + 1;
+
+        if (currentQ < 12) {
+            showQuestion();
+        } else {
+            clearInterval(timerInterval);
+            document.getElementById("quizBlock").style.display = "none";
+            alert("Поздравляем, " + userName + "! Тест сдан на " + score + " баллов.");
+        }
+    }
+</script>
+
+</body>
+</html>
