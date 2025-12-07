@@ -46,16 +46,13 @@
         При нажатии на кнопку "Отобразить значения", используя цикл for, выведите значения всех элементов управления input (кроме input type=button), на консоль.
         */
         
-        // Находим кнопку и форму
         let button = document.querySelector("input[type='button']");
         let form = document.forms[0];
 
         button.addEventListener("click", function() {
-            // Перебираем все элементы формы
             for (let i = 0; i < form.elements.length; i++) {
                 let element = form.elements[i];
                 
-                // Проверяем: это input? и это НЕ кнопка?
                 if (element.tagName === "INPUT" && element.type !== "button") {
                     console.log(element.name + ": " + element.value);
                 }
