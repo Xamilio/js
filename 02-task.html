@@ -84,13 +84,11 @@
         let saveButton = document.querySelector("#saveButton");
 
         saveButton.addEventListener("click", function () {
-            // Передаем значение поля count в функцию
             addRow(productForm.name.value,
                 productForm.price.value,
                 productForm.currency.value,
                 productForm.count.value);
 
-            // Очистка полей
             for (let i = 0; i < productForm.elements.length; i++) {
                 const element = productForm.elements[i];
                 if (element.type == "text" || element.type == "number") element.value = "";
@@ -102,7 +100,6 @@
             tr.insertAdjacentHTML("beforeend", `<td>${name}</td>`);
             tr.insertAdjacentHTML("beforeend", `<td>${price}</td>`);
             tr.insertAdjacentHTML("beforeend", `<td>${currency}</td>`);
-            // Добавляем 4-ю колонку
             tr.insertAdjacentHTML("beforeend", `<td>${count}</td>`);
             productsTable.append(tr);
         }
