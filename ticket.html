@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Railway Booking</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        .block {
+            background-color: #fdf5e6;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        #booking-window {
+            display: none;
+        }
+        .seats-container {
+            border: 1px solid #aaa;
+            padding: 10px;
+            margin: 10px 0;
+            width: 550px;
+        }
+        .seat {
+            display: inline-block;
+            width: 40px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background: white;
+            padding: 2px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fdf5e6;
+        }
+        td, th {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="block">
+        Direction:
+        <select id="direction">
+            <option>Odessa - Lviv</option>
+            <option>Kyiv - Kharkiv</option>
+        </select>
+        Date: <input type="text" id="date" value="24.07.2018">
+        <button onclick="startSearch()">Search</button>
+    </div>
+
+    <div class="block" id="booking-window">
+        <div>
+            Direction: <span id="out-dir"></span> 
+            Date: <span id="out-date"></span>
+        </div>
+        <hr>
+        <div id="seats-place" class="seats-container"></div>
+        <div style="text-align: right;">
+            Total price: <b id="price">0</b>$ 
+            <button onclick="bookTickets()">Book</button>
+        </div>
+    </div>
+
+    <h3>My tickets:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Direction</th>
+                <th>Date</th>
+                <th>Seat</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        let myTickets = [];
+        let pricePerSeat = 62;
+
+        function startSearch() {
+            let dir = document.getElementById("direction").value;
+            let date = document.getElementById("date").value;
+
+            if (date == "") {
+                alert("Введите дату");
+                return;
+            }
+
+            document.getElementById("out-dir").innerText = dir;
+            document.getElementById("out-date").innerText = date;
+            document.getElementById("booking-window").style.display = "block";
+            
+            drawSeats();
+            updatePrice();
+        }
+
+        function drawSeats() {
+            let container = document.getElementById("seats-place");
+            let html = "";
+            
+            for (let i = 1; i <= 28; i++) {
+                html += '<div class="seat">';
+                html += '<input type="checkbox" class="seat-check" value="' + i + '" onclick="updatePrice()"> ';
+                html += i;
+                html += '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function updatePrice() {
+            let checkboxes = document.getElementsByClassName("seat-check");
+            let count = 0;
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    count++;
+                }
+            }
+
+            document.getElementById("price").innerText = count * pricePerSeat;
+        }
+
+        function bookTickets() {
+            let dir = document.getElementById("direction").value;
+            let date = document.getElementById("date").value;
+            let checkboxes = document.getElementsByClassName("seat-check");
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    let ticket = {
+                        direction: dir,
+                        date: date,
+                        seat: checkboxes[i].value
+                    };
+                    myTickets.push(ticket);
+                }
+            }
+
+            renderTable();
+            document.getElementById("booking-window").style.display = "none";
+        }
+
+        function renderTable() {
+            let tbody = document.getElementById("table-body");
+            tbody.innerHTML = "";
+
+            for (let i = 0; i < myTickets.length; i++) {
+                let t = myTickets[i];
+                let row = "<tr>";
+                row += "<td>" + t.direction + "</td>";
+                row += "<td>" + t.date + "</td>";
+                row += "<td>" + t.seat + "</td>";
+                row += "</tr>";
+                
+                tbody.innerHTML += row;
+            }
+        }
+    </script>
+</body>
+</html>
