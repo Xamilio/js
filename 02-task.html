@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 02</title>
+</head>
+
+<body>
+    <p>
+        <label>Радиус (r): <input type="number" id="radius"></label>
+    </p>
+    <p>
+        <label>Высота (h): <input type="number" id="height"></label>
+    </p>
+    <button id="calcBtn">Вычислить объем</button>
+    <h3 id="result"></h3>
+
+    <script>
+        const rInput = document.querySelector('#radius');
+        const hInput = document.querySelector('#height');
+        const btn = document.querySelector('#calcBtn');
+        const result = document.querySelector('#result');
+
+        btn.addEventListener('click', () => {
+            const r = Number(rInput.value);
+            const h = Number(hInput.value);
+            
+            const v = Math.PI * (r ** 2) * h;
+            
+            result.textContent = `Объем цилиндра: ${v.toFixed(2)}`;
+        });
+    </script>
+</body>
+
+</html>
